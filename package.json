@@ -1,0 +1,15 @@
+{
+  "name": "youtube",
+  "author": "Timothée Poincheval",
+  "license": "MIT",
+  "main": "app/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^4.0.4",
+    "electron-packager": "^13.0.1"
+  },
+  "description": "Desktop app for Youtube",
+  "version": "0.1.2"
+}
