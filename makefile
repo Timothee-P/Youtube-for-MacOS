@@ -3,7 +3,6 @@ default:
 
 install:
 	@npm i && npm prune
-	@cd app && npm i && npm prune
 
 bundle:
 	@./node_modules/.bin/electron-packager ./app "Youtube" \

@@ -1,66 +1,124 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, Menu, session } = require('electron')
 const path = require('path')
 const { ipcMain } = require('electron')
+
+const ipc = ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+const template = [
+  // { role: 'appMenu' }
+  ...(process.platform === 'darwin' ? [{
+    label: app.getName(),
+    submenu: [
+      { role: 'about' },
+      { type: 'separator' },
+      { role: 'services' },
+      { type: 'separator' },
+      { role: 'hide' },
+      { role: 'hideothers' },
+      { role: 'unhide' },
+      { type: 'separator' },
+      { role: 'quit' }
+    ]
+  }] : []),
+  // { role: 'fileMenu' }
+  {
+    label: 'File',
+    submenu: [
+      { role: 'close' }
+    ]
+  },
+  // { role: 'editMenu' }
+  {
+    label: 'Edit',
+    submenu: [
+      { role: 'undo' },
+      { role: 'redo' },
+      { type: 'separator' },
+      { role: 'cut' },
+      { role: 'copy' },
+      { role: 'paste' },
 
-function createWindow () {
+      { role: 'pasteAndMatchStyle' },
+      { role: 'delete' },
+      { role: 'selectAll' },
+      { type: 'separator' },
+      {
+        label: 'Speech',
+        submenu: [
+          { role: 'startspeaking' },
+          { role: 'stopspeaking' }
+        ]
+      }
+
+    ]
+  },
+  // { role: 'viewMenu' }
+  {
+    label: 'View',
+    submenu: [
+      { role: 'reload' },
+      { role: 'forcereload' },
+      { role: 'toggledevtools' },
+      { type: 'separator' },
+      { role: 'resetzoom' },
+      { role: 'zoomin' },
+      { role: 'zoomout' },
+      { type: 'separator' },
+      { role: 'togglefullscreen' }
+    ]
+  },
+  // { role: 'windowMenu' }
+  {
+    label: 'Window',
+    submenu: [
+      { role: 'minimize' },
+      { role: 'zoom' },
+
+      { type: 'separator' },
+      { role: 'front' },
+      { type: 'separator' },
+      { role: 'window' }
+
+    ]
+  },
+  {
+    role: 'help',
+    submenu: [
+      {
+        label: 'Learn More',
+        click() { require('electron').shell.openExternalSync('https://electronjs.org') }
+      }
+    ]
+  }
+]
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
+
+
+
+function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1600, height: 900, titleBarStyle: 'hidden',fullscreen: false,webPreferences: {
-    nodeIntegration: true,
-    preload: path.join(__dirname, 'js/test.js')
-} } )
-  
+  mainWindow = new BrowserWindow({
+    width: 1600, height: 900, frame: false, titleBarStyle: 'hidden', webPreferences: {
+      nodeIntegration: true,
+      //preload: path.join(__dirname, 'js/test.js')
+    }
+  })
+
   // and load the index.html of the app.
-  mainWindow.loadURL('https://www.youtube.com/');
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
   app.dock.show();
 
-  
-  mainWindow.webContents.on('did-navigate-in-page', function(e,url){
 
-      setTimeout(function(){
 
-        
-        mainWindow.webContents.executeJavaScript("if(window.location.pathname == '/watch'){console.log('300ms Top');document.getElementsByClassName('ytp-fullscreen-button')[0].click();document.querySelector('ytd-app').setAttribute('class','')}else{document.querySelector('ytd-app').setAttribute('class','fullVideo');}",true);
-        
-    },300)
-      setTimeout(function(){
 
-        
-        mainWindow.webContents.executeJavaScript("if(!document.querySelector('ytd-app').hasAttribute('masthead-hidden_')){console.log('700ms Top');document.getElementsByClassName('ytp-fullscreen-button')[0].click();}",true);
-        
-        
-      },700)
-      setTimeout(function(){
-          
-        mainWindow.webContents.executeJavaScript("if(window.location.pathname =='/watch'){window.resizeTo(parseInt(document.getElementsByClassName('video-stream')[0].style.width),parseInt(document.getElementsByClassName('video-stream')[0].style.height))}",true);
-        
-       
-    
-  },1100)
-  var urlPath= new URL(e.sender.history[(e.sender.history.length-1)]).pathname
-  if( urlPath =="/watch"){
-    mainWindow.setWindowButtonVisibility(false);
-}else{ mainWindow.setWindowButtonVisibility(true);}
-  })
-mainWindow.webContents.on('dom-ready', function(e){
-    setTimeout(function(){
-
-        
-        mainWindow.webContents.executeJavaScript("if(window.location.pathname == '/watch'){console.log('300ms Top');document.getElementsByClassName('ytp-fullscreen-button')[0].click();document.querySelector('ytd-app').setAttribute('class','')}else{document.querySelector('ytd-app').setAttribute('class','fullVideo');}",true);
-        
-    },300)
-    if(new URL(e.sender.history[(e.sender.history.length-1)]).pathname =="/watch"){
-        mainWindow.setWindowButtonVisibility(false);
-    }else{ mainWindow.setWindowButtonVisibility(true);}
-    
-   
-})
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -69,12 +127,44 @@ mainWindow.webContents.on('dom-ready', function(e){
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', () => {
+  const cookie = { url: 'https://www.youtube.com', name: 'wide', value: '1' }
+  session.defaultSession.cookies.set(cookie, (error) => {
+    if (error) console.error(error)
+  })
+  session.defaultSession.webRequest.onBeforeRequest(['*://*./*'], function (details, callback) {
+
+    var test_url = details.url;
+    var check_block_list = /\.(gr|hk||fm|eu|it|es|is|net|ke|me||tz|za|zm|uk|us|in|com|de|fr|zw|tv|sk|se|php|pk|pl)\/ads?[\-_./\?]|(stats?|rankings?|yt3.ggpht.com|ad.doubleclick.net|pagead|get_midroll_info?|tracks?|adview?|trigg|webtrends?|webtrekk|statistiche|visibl|searchenginejournal|visit|webstat|survey|spring).*.(com|net|de|fr|co|it|se)|cloudflare|\/statistics\/|torrent|[\-_./]ga[\-_./]|[\-_./]counter[\-_./\?]|ad\.admitad\.|\/widgets?[\-_./]?ads?|\/videos?[\-_./]?ads?|\/valueclick|userad|track[\-_./]?ads?|\/top[\-_./]?ads?|\/sponsor[\-_./]?ads?|smartadserver|\/sidebar[\-_]?ads?|popunder|\/includes\/ads?|\/iframe[-_]?ads?|\/header[-_]?ads?|\/framead|\/get[-_]?ads?|\/files\/ad*|exoclick|displayad|\ajax\/ad|adzone|\/assets\/ad*|advertisement|\/adv\/*\.|ad-frame|\.com\/bads\/|follow-us|connect-|-social-|googleplus.|linkedin|footer-social.|social-media|gmail|commission|adserv\.|omniture|netflix|huffingtonpost|dlpageping|log204|geoip\.|baidu|reporting\.|paypal|maxmind|geo\.|api\.bit|hits|predict|cdn-cgi|record_|\.ve$|radar|\.pop|\.tinybar\.|\.ranking|.cash|\.banner\.|adzerk|gweb|alliance|adf\.ly|monitor|urchin_post|imrworldwide|gen204|twitter|naukri|hulu.com|baidu|seotools|roi-|revenue|tracking.js|\/tracking[\-_./]?|elitics|demandmedia|bizrate|click-|click\.|bidsystem|affiliates?\.|beacon|hit\.|googleadservices|metrix|googleanal|dailymotion|ga.js|survey|trekk|visit_|arcadebanners?|visitor\.|ielsen|cts\.|link_|ga-track|FacebookTracking|quantc|traffic|evenuescien|roitra|pixelt|pagetra|metrics|[-_/.]?stats?[.-_/]?|common_|accounts\.|contentad|iqadtile|boxad|audsci.js|ebtrekk|seotrack|clickalyzer|youtube|\/tracker\/|ekomi|clicky|[-_/.]?click?[.-_/]?|[-_/.]?tracking?[.-_/]?|[-_/.]?track?[.-_/]?|ghostery|hscrm|watchvideo|clicks4ads|mkt[0-9]|createsend|analytix|shoppingshadow|clicktracks|admeld|google-analytics|-analytic|googletagservices|googletagmanager|tracking\.|thirdparty|track\.|pflexads|smaato|medialytics|doubleclick|cloudfront|-static|-static-|static-|sponsored-banner|static_|_static_|_static|sponsored_link|sponsored_ad|googleadword|analytics\.|googletakes|adsbygoogle|analytics-|-analytic|analytic-|googlesyndication|google_adsense2|googleAdIndexTop|\/ads\/|google-ad-|google-ad?|google-adsense-|google-adsense.|google-adverts-|google-adwords|google-afc-|google-afc.|google\/ad\?|google\/adv\.|google160.|google728.|_adv|google_afc.|google_afc_|google_afs.|google_afs_widget|google_caf.js|google_lander2.js|google_radlinks_|googlead|googleafc.|googleafs.|googleafvadrenderer.|googlecontextualads.|googleheadad.|googleleader.|googleleads.|googlempu.|ads_|_ads_|_ads|easyads|easyads|easyadstrack|ebayads|[.\-_/\?](ads?|clicks?|tracks?|tracking|logs?)[.\-_/]?(banners?|mid|trends|pathmedia|tech|units?|vert*|fox|area|loc|nxs|format|call|script|final|systems?|show|tag\.?|collect*|slot|right|space|taily|vids?|supply|true|targeting|counts?|nectar|net|onion|parlor|2srv|searcher|fundi|nimation|context|stats?|vertising|class|infuse|includes?|spacers?|code|images?|vers|texts?|work*|tail|track|streams?|ability||world*|zone|position|vertisers?|servers?|view|partner|data)[.\-_/]?/gi
+    var check_white_list = /status|premoa.*.jpg|index|www.youtube.com|googlevideo.com|rakuten|nitori-net|search\?tbs\=sbi\:|google.*\/search|ebay.*static.*g|\/shopping\/product|aclk?|translate.googleapis.com|encrypted-|product|www.googleadservices.com\/pagead\/aclk|target.com|.css/gi;
+    var check_reblock_list = /status|target.com|pagead|get_midroll_info?|tracks?|adview?|ads/gi;
+
+    var block_me = check_block_list.test(test_url);
+    var release_me = check_white_list.test(test_url);
+    var reblock_me = check_reblock_list.test(test_url);
+
+    if (reblock_me) {
+      callback({ cancel: true });
+
+    } else if (release_me) {
+      callback({ cancel: false })
+    } else if (block_me) {
+      callback({ cancel: true });
+
+    } else {
+      callback({ cancel: false })
+    }
+
+  });
+  createWindow();
+
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -89,16 +179,37 @@ app.on('activate', function () {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
+    const cookie = { url: 'https://www.youtube.com', name: 'wide', value: '1' }
+    session.defaultSession.cookies.set(cookie, (error) => {
+      if (error) console.error(error)
+    })
     createWindow()
   }
 })
-
+var boundWin;
+ipcMain.on('asynchronous-message-resize', (event, arg1,arg2) => {
+  console.log(parseInt(arg1));
+  console.log(parseInt(arg2));
+  mainWindow.setBounds({width: parseInt(arg1), height: parseInt(arg2)})
+});
 ipcMain.on('asynchronous-message', (event, arg) => {
-  if(arg == 'showButton'){
+  if (arg == 'showButton') {
     mainWindow.setWindowButtonVisibility(true);
-  }else if (arg == 'hideButton'){
+  } else if (arg == 'hideButton') {
     mainWindow.setWindowButtonVisibility(false);
+  } else if (arg == 'fullscreen') {
+    if (mainWindow.isFullScreen()) {
+      mainWindow.setFullScreen(false);
+    } else {
+      mainWindow.setFullScreen(true);
+    }
+  } else if (arg == 'pip') {
+    boundWin = mainWindow.getBounds();
+    mainWindow.setBounds({ x: 50, y: 50, width: 540, height: 300 });
+    mainWindow.setAlwaysOnTop(true);
+  } else if (arg == 'pipOff') {
+    mainWindow.setBounds(boundWin);
+    mainWindow.setAlwaysOnTop(false);
   }
+
 })
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
