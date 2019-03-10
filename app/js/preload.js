@@ -26,11 +26,13 @@ document.addEventListener("mousemove", function(event) {
             });
             document.getElementsByClassName("ytp-size-button")[0].addEventListener('click',function(e){
                 if(isPIP==false && isPIPpending==false){
+                    var height= (550*parseInt(document.getElementsByClassName('video-stream')[0].style.height))/parseInt(document.getElementsByClassName('video-stream')[0].style.width)
+                    
                     isPIP=true
                     isPIPpending=true;
                     document.getElementById("columns").style.display="none";
                     document.querySelector("ytd-app").setAttribute('class','fullVideo');
-                    ipcRenderer.send('asynchronous-message', 'pip')
+                    ipcRenderer.send('asynchronous-message', 'pip',height)
                     setTimeout(function(event){
                         document.getElementsByClassName("ytp-size-button")[0].click();
                     },30)
