@@ -7,7 +7,7 @@ Still in construction
 Downloads the App:
 ------------------
 
-https://github.com/Timothee-P/Youtube-for-MacOS/releases/download/v0.1-alpha/Youtube.app.zip
+https://github.com/Timothee-P/Youtube-for-MacOS/releases/download/v0.2-alpha/Youtube.app.zip
 
 Develope the App:
 -----------------
