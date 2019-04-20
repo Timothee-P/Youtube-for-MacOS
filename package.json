@@ -7,11 +7,11 @@
     "start": "electron ."
   },
   "devDependencies": {
-    "electron-packager": "^13.1.0"
+    "electron-packager": "^13.1.1"
   },
   "description": "Desktop app for Youtube",
   "version": "0.1.2",
   "dependencies": {
-    "electron": "^4.0.6"
+    "electron": "^4.1.4"
   }
 }
