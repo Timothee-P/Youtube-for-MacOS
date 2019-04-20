@@ -14,6 +14,55 @@ webview.addEventListener('dom-ready', () => {
 
 webview.addEventListener('page-title-updated', (e) => {
     var urlPath = new URL(e.target.src).pathname
+    CinemaMode(urlPath);
+    
+})
+
+ipcRenderer.on('asynchronous-swipe', (event, arg, arg1) => {
+    if (arg == 'showBack') {
+        var backArrow = document.getElementById('leftArrowContainer')
+        backArrow.classList.toggle('shown')
+        backArrow.classList.toggle('animating')
+        setTimeout(function () {
+        backArrow.classList.toggle('shown')
+        }, 600)
+        setTimeout(function () {
+        backArrow.classList.toggle('animating')
+        }, 900)
+    
+    } else if (arg == 'showForward') {  
+        var forwardArrow = document.getElementById('rightArrowContainer')
+        forwardArrow.classList.toggle('shown')
+        forwardArrow.classList.toggle('animating')
+        setTimeout(function () {
+        forwardArrow.classList.toggle('shown')
+        }, 600)
+        setTimeout(function () {
+        forwardArrow.classList.toggle('animating')
+        }, 900)
+    
+    }else if (arg == 'goBack') {
+        webview.goBack();
+        setTimeout(function () {
+            var urlPath =new URL(webview.getURL()).pathname
+            CinemaMode(urlPath)
+        },100)
+        
+    }else if (arg == 'goForward') {
+        webview.goForward();
+        setTimeout(function () {
+            var urlPath =new URL(webview.getURL()).pathname
+            CinemaMode(urlPath)
+        },100)
+    
+    }
+});
+
+
+
+
+
+function CinemaMode(urlPath){
     if (urlPath == "/watch") {
         webview.setAttribute("class", "video");
         webview.executeJavaScript("document.querySelector('ytd-app').setAttribute('class','ytp-big-mode fullVideo')", true);
@@ -32,5 +81,4 @@ webview.addEventListener('page-title-updated', (e) => {
         browser.setWindowButtonVisibility(true);
         ipcRenderer.send("asynchronous-message","resizeOff");
     }
-})
-
+}
