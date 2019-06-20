@@ -3,7 +3,7 @@ body {
     margin: 0;
     height: 100vh;
 }
-.video {
+.video webview{
     margin-top: 0px !important;
     height: 100vh !important;
 }
@@ -24,6 +24,9 @@ body {
     height:68px;
     position: fixed;
     z-index: -1;
+}
+.video #dragger{
+    height: 100vh;;
 }
 .arrow-indicator {
 	width: 140px;

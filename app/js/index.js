@@ -3,11 +3,11 @@ const { ipcRenderer,remote } = require('electron');
 var browser = remote.getCurrentWindow();
 var oncePreload=false;
 const webview = document.querySelector('webview')
-
+const body = document.querySelector('body')
 
 webview.addEventListener('dom-ready', () => {
     webview.style.opacity = 1
-    //webview.openDevTools();
+    webview.openDevTools();
 
 
 })
@@ -64,9 +64,13 @@ ipcRenderer.on('asynchronous-swipe', (event, arg, arg1) => {
 
 function CinemaMode(urlPath){
     if (urlPath == "/watch") {
-        webview.setAttribute("class", "video");
-        webview.executeJavaScript("document.querySelector('ytd-app').setAttribute('class','ytp-big-mode fullVideo')", true);
+        body.setAttribute("class", "video");
+        webview.executeJavaScript("document.querySelector('ytd-app').setAttribute('class','ytp-big-mode fullVideo');", true);
         browser.setWindowButtonVisibility(false);
+        setTimeout(function(){
+            webview.executeJavaScript("if(document.querySelector('.ytp-gradient-bottom.top')){document.querySelector('.ytd-img-top').setAttribute('src',document.querySelector('.ytd-video-owner-renderer img').src);document.querySelector('.ytd-title-top').innerHTML = document.querySelector('h1.ytd-video-primary-info-renderer').innerText;}else{var img = document.createElement('img');img.setAttribute('id','img');img.setAttribute('class','ytd-img-top');img.setAttribute('src',document.querySelector('.ytd-video-owner-renderer img').src);var h1 = document.createElement('h1');h1.setAttribute('class','ytd-title-top');h1.innerHTML = document.querySelector('h1.ytd-video-primary-info-renderer').innerText;var div = document.createElement('div');div.setAttribute('class','ytp-gradient-bottom top');div.appendChild(h1);div.appendChild(img);document.querySelector('#movie_player').appendChild(div);}", true);
+        
+        },200)
         setTimeout(function(){
             webview.executeJavaScript("window.ipcTest.send('asynchronous-message-resize',document.getElementsByClassName('video-stream')[0].style.width,document.getElementsByClassName('video-stream')[0].style.height)", true);
         
@@ -76,7 +80,7 @@ function CinemaMode(urlPath){
             oncePreload=true
         }
     } else {
-        webview.removeAttribute("class")
+        body.removeAttribute("class")
         webview.executeJavaScript("document.querySelector('ytd-app').setAttribute('class','ytp-big-mode')", true);
         browser.setWindowButtonVisibility(true);
         ipcRenderer.send("asynchronous-message","resizeOff");

@@ -8,7 +8,7 @@ bundle:
 	@./node_modules/.bin/electron-packager ./app "Youtube" \
 		--platform=darwin \
 		--arch=all \
-		--icon=./icon.icns \
+		--icon=./app/assets/icon.icns \
 		--overwrite \
 		--asar=true \
 		--out=build \
