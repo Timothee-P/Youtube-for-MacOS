@@ -1,17 +1,15 @@
 {
-  "name": "youtube",
-  "author": "Timothée Poincheval",
-  "license": "MIT",
-  "main": "app/main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "devDependencies": {
-    "electron-packager": "^13.1.1"
-  },
-  "description": "Desktop app for Youtube",
-  "version": "0.1.2",
-  "dependencies": {
-    "electron": "^4.1.4"
-  }
+	"name": "youtube-mac",
+	"version": "1.0.0",
+	"description": "Desktop app for Youtube",
+	"main": "app/main.js",
+	"scripts": {
+		"test": "electron ."
+	},
+	"author": "Timothée Poincheval",
+	"license": "MIT",
+	"devDependencies": {
+		"electron": "^8.0.1",
+		"electron-packager": "^14.2.1"
+	}
 }

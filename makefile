@@ -1,15 +1,15 @@
 default:
-	@./node_modules/.bin/electron ./app
+	@./node_modules/.bin/electron ./
 
 install:
 	@npm i && npm prune
 
 bundle:
-	@./node_modules/.bin/electron-packager ./app "Youtube" \
+	@./node_modules/.bin/electron-packager ./ "Youtube" \
 		--platform=darwin \
 		--arch=all \
 		--icon=./app/assets/icon.icns \
 		--overwrite \
 		--asar=true \
 		--out=build \
-		&& open build/Youtube-darwin-x64/Youtube.app
+		&& open build/Youtube.app
