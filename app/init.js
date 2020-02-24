@@ -17,7 +17,7 @@ init = {
 			titleBarStyle: "hidden",
 			webPreferences: {
 				nodeIntegration: true,
-				preload: path.join(__dirname, "renderer/index.js"),
+				preload: path.join(__dirname, "renderer/build/index.js"),
 				disableHtmlFullscreenWindowResize: true
 			}
 		});
