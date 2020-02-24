@@ -6,8 +6,8 @@ const { Ipc } = require("./functions/ipc.js");
 const { Window } = require("./functions/window.js");
 
 init = {
-	createWindow: function() {
-		this.createLoader();
+	createWindow: async function() {
+		await this.createLoader();
 
 		global.mainWindow = new BrowserWindow({
 			width: 1600,
@@ -45,15 +45,15 @@ init = {
 		});
 	},
 
-	createLoader: function() {
-		global.loadingWindow = new BrowserWindow({
+	createLoader: async function() {
+		global.loadingWindow = await new BrowserWindow({
 			width: 450,
 			height: 500,
 			backgroundColor: "#272727",
 			frame: false,
 			titleBarStyle: "hidden"
 		});
-		global.loadingWindow.loadURL(`file://${__dirname}/template/loading.html`);
+		await global.loadingWindow.loadURL(`file://${__dirname}/template/loading.html`);
 	},
 
 	loadCookies: (isBlack) => {
