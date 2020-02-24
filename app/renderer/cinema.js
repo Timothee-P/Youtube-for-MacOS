@@ -1,12 +1,28 @@
 let Cinema = {
-	start: function() {
+	isCinemaLink: function() {
+		if (window.location.pathname == "/watch") {
+			this.cinemaOn();
+		} else {
+			this.cinemaOff();
+		}
+	},
+	cinemaOn: function() {
 		document.querySelector("ytd-app").setAttribute("class", "ytp-big-mode fullVideo");
+		ipcRenderer.send("asynchronous-message", ["cinemaOn"]);
 		this.setVideoTitleTop();
 		CinemaHeader.startEvent();
+		setTimeout(() => {
+			ipcRenderer.send("asynchronous-message", [
+				"resizeRatio",
+				document.getElementsByClassName("video-stream")[0].style.width,
+				document.getElementsByClassName("video-stream")[0].style.height
+			]);
+		}, 300);
 	},
-	end: function() {
+	cinemaOff: function() {
 		document.querySelector("ytd-app").setAttribute("class", "ytp-big-mode");
-		CinemaHeader.startEvent();
+		ipcRenderer.send("asynchronous-message", ["cinemaOff"]);
+		CinemaHeader.endEvent();
 	},
 
 	setVideoTitleTop: function() {

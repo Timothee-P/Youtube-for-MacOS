@@ -1,16 +1,20 @@
+const { ipcRenderer } = require("electron");
+
 var headerState = {
 	isVisible: false,
 	isScrolling: false,
 	cursorIsTop: false
 };
 window.addEventListener("DOMContentLoaded", (event) => {
-	console.log("location changed!");
+	ipcRenderer.send("asynchronous-message", ["cssReady"]);
+	Cinema.isCinemaLink();
 });
 window.addEventListener("load", (event) => {
-	console.log("location load!");
-	document.querySelector("ytd-app").setAttribute("class", "ytp-big-mode");
+	ipcRenderer.send("asynchronous-message", ["appReady"]);
+	window.addEventListener("yt-page-data-updated", function(e) {
+		Cinema.isCinemaLink();
+	});
 });
 document.addEventListener("fullscreenchange", function() {
 	document.exitFullscreen();
 });
-window.addEventListener("yt-page-data-updated", function() {});

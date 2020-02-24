@@ -23,26 +23,8 @@ init = {
 		});
 		global.mainWindow.loadURL(`https://www.youtube.com/`);
 
-		Ipc.load();
-		this.onLoaded();
+		Ipc.load(this);
 		Window.initEvent();
-	},
-
-	onLoaded: function() {
-		global.mainWindow.webContents.once("did-finish-load", async function() {
-			setTimeout(() => {
-				global.loadingWindow.destroy();
-				global.mainWindow.show();
-			}, 100);
-		});
-		global.mainWindow.webContents.on("did-finish-load", async () => {
-			await fs.readFile(__dirname + "/css/style.css", "utf-8", async function(error, data) {
-				await global.mainWindow.webContents.insertCSS(data);
-			});
-			setTimeout(() => {
-				Window.isCinemaLink();
-			}, 100);
-		});
 	},
 
 	createLoader: async function() {
@@ -76,6 +58,15 @@ init = {
 				value: "f1=50000000&f4=4000000&f6=400"
 			});
 		}
+	},
+	injectCSS: function() {
+		fs.readFile(__dirname + "/css/style.css", "utf-8", async function(error, data) {
+			global.mainWindow.webContents.insertCSS(data);
+		});
+	},
+	onAppReady: function() {
+		global.loadingWindow.destroy();
+		global.mainWindow.show();
 	}
 };
 
