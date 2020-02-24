@@ -1,5 +1,6 @@
 const { BrowserWindow, session } = require("electron");
 const fs = require("fs");
+const path = require("path");
 
 const { Ipc } = require("./functions/ipc.js");
 const { Window } = require("./functions/window.js");
@@ -13,7 +14,12 @@ init = {
 			height: 900,
 			show: false,
 			frame: false,
-			titleBarStyle: "hidden"
+			titleBarStyle: "hidden",
+			webPreferences: {
+				nodeIntegration: true,
+				preload: path.join(__dirname, "renderer/index.js"),
+				disableHtmlFullscreenWindowResize: true
+			}
 		});
 		global.mainWindow.loadURL(`https://www.youtube.com/`);
 
@@ -22,16 +28,30 @@ init = {
 		Window.initEvent();
 	},
 
+	onLoaded: function() {
+		global.mainWindow.webContents.once("did-finish-load", async function() {
+			setTimeout(() => {
+				global.loadingWindow.destroy();
+				global.mainWindow.show();
+			}, 100);
+		});
+		global.mainWindow.webContents.on("did-finish-load", async () => {
+			await fs.readFile(__dirname + "/css/style.css", "utf-8", async function(error, data) {
+				await global.mainWindow.webContents.insertCSS(data);
+			});
+			setTimeout(() => {
+				Window.isCinemaLink();
+			}, 100);
+		});
+	},
+
 	createLoader: function() {
 		global.loadingWindow = new BrowserWindow({
 			width: 450,
 			height: 500,
 			backgroundColor: "#272727",
 			frame: false,
-			titleBarStyle: "hidden",
-			webPreferences: {
-				nodeIntegration: true
-			}
+			titleBarStyle: "hidden"
 		});
 		global.loadingWindow.loadURL(`file://${__dirname}/template/loading.html`);
 	},
@@ -56,22 +76,7 @@ init = {
 				value: "f1=50000000&f4=4000000&f6=400"
 			});
 		}
-	},
-	onLoaded: function() {
-		global.mainWindow.webContents.on("did-finish-load", async function() {
-			await fs.readFile(__dirname + "/css/style.css", "utf-8", async function(error, data) {
-				await global.mainWindow.webContents.insertCSS(data);
-			});
-			await fs.readFile(__dirname + "/renderer/index.js", "utf-8", async function(error, data) {
-				await global.mainWindow.webContents.executeJavaScript(data);
-			});
-			setTimeout(() => {
-				global.loadingWindow.destroy();
-				global.mainWindow.show();
-			}, 10);
-		});
-	},
-	initWindowEvent: function() {}
+	}
 };
 
 exports.init = init;
