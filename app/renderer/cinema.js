@@ -5,7 +5,6 @@ let Cinema = {
 			this.cinemaOn();
 		} else {
 			CinemaHeader.init();
-			console.log(headerState);
 			this.cinemaOff();
 		}
 	},
