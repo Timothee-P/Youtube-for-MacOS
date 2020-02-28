@@ -1,15 +1,17 @@
 let CinemaHeader = {
+	init: function() {
+		headerState = {
+			isVisible: false,
+			isScrolling: false,
+			cursorIsTop: false
+		};
+	},
 	startEvent: function() {
 		document.addEventListener("mousemove", this.onMouseMove);
 		document.addEventListener("mouseleave", this.onMouseOut);
 		document.addEventListener("scroll", this.onScroll);
 	},
 	endEvent: function() {
-		headerState = {
-			isVisible: false,
-			isScrolling: false,
-			cursorIsTop: false
-		};
 		document.removeEventListener("mousemove", this.onMouseMove);
 		document.removeEventListener("mouseleave", this.onMouseOut);
 		document.removeEventListener("scroll", this.onScroll);
@@ -36,8 +38,8 @@ let CinemaHeader = {
 			ipcRenderer.send("asynchronous-message", ["showButton"]);
 		}
 	},
-	hide: function() {
-		if (headerState.isVisible) {
+	hide: function(bypassIf = false) {
+		if (bypassIf || headerState.isVisible) {
 			headerState.isVisible = false;
 			if (document.querySelector(".ytp-cards-button")) {
 				document.querySelector(".ytp-cards-button").style.transform = "";
@@ -68,3 +70,5 @@ let CinemaHeader = {
 		CinemaHeader.manage();
 	}
 };
+var headerState = {};
+CinemaHeader.init();

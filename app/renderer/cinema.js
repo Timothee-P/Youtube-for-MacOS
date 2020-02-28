@@ -1,8 +1,11 @@
 let Cinema = {
 	isCinemaLink: function() {
 		if (window.location.pathname == "/watch") {
+			CinemaHeader.hide(true);
 			this.cinemaOn();
 		} else {
+			CinemaHeader.init();
+			console.log(headerState);
 			this.cinemaOff();
 		}
 	},
@@ -20,8 +23,9 @@ let Cinema = {
 		}, 300);
 	},
 	cinemaOff: function() {
-		document.querySelector("ytd-app").setAttribute("class", "ytp-big-mode");
+		document.querySelector("ytd-app").setAttribute("class", "");
 		ipcRenderer.send("asynchronous-message", ["cinemaOff"]);
+		this.removeVideoTitleTop();
 		CinemaHeader.endEvent();
 	},
 
@@ -44,5 +48,10 @@ let Cinema = {
 		div.setAttribute("class", "ytp-gradient-bottom top");
 		div.innerHTML = "<h1 class='ytd-title-top'></h1><img class='ytd-img-top'/>";
 		document.querySelector("#movie_player").appendChild(div);
+	},
+	removeVideoTitleTop: function() {
+		if (document.querySelector(".ytp-gradient-bottom.top")) {
+			document.querySelector(".ytp-gradient-bottom.top").remove();
+		}
 	}
 };

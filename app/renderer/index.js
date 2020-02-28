@@ -1,10 +1,5 @@
 const { ipcRenderer } = require("electron");
 
-var headerState = {
-	isVisible: false,
-	isScrolling: false,
-	cursorIsTop: false
-};
 window.addEventListener("DOMContentLoaded", (event) => {
 	ipcRenderer.send("asynchronous-message", ["cssReady"]);
 	Cinema.isCinemaLink();
