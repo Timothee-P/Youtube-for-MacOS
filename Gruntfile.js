@@ -11,23 +11,17 @@ module.exports = function(grunt) {
 		uglify: {
 			dist: {
 				files: {
-					"app/renderer/build/index.min.js": ["<%= concat.dist.dest %>"]
+					"app/renderer/build/index.js": ["<%= concat.dist.dest %>"]
 				}
-			}
-		},
-		jshint: {
-			files: ["app/renderer/*.js", "!app/renderer/build/*.js"],
-			options: {
-				esversion: 6
 			}
 		}
 	});
 
 	// Load the plugin that provides the "uglify" task.
 	grunt.loadNpmTasks("grunt-contrib-uglify-es");
-	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-concat");
 
 	// Default task(s).
-	grunt.registerTask("default", ["jshint", "concat", "uglify"]);
+	grunt.registerTask("prod", ["concat", "uglify"]);
+	grunt.registerTask("dev", ["concat"]);
 };
