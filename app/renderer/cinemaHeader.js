@@ -1,5 +1,5 @@
 let CinemaHeader = {
-	init: function() {
+	reset: function() {
 		headerState = {
 			isVisible: false,
 			isScrolling: false,
@@ -71,4 +71,4 @@ let CinemaHeader = {
 	}
 };
 var headerState = {};
-CinemaHeader.init();
+CinemaHeader.reset();
