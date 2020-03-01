@@ -11,8 +11,24 @@ module.exports = function(grunt) {
 		uglify: {
 			dist: {
 				files: {
-					"app/renderer/build/index.js": ["<%= concat.dist.dest %>"]
+					"<%= concat.dist.dest %>": ["<%= concat.dist.dest %>"]
 				}
+			}
+		},
+		cssmin: {
+			target: {
+				files: [
+					{
+						"app/renderer/build/style.min.css": ["app/css/style.css"]
+					}
+				]
+			}
+		},
+		insert: {
+			main: {
+				src: "app/renderer/build/style.min.css",
+				dest: "<%= concat.dist.dest %>",
+				match: /\/\/ STYLE.CSS INSERT HERE ON BUILD \/\//
 			}
 		}
 	});
@@ -20,8 +36,10 @@ module.exports = function(grunt) {
 	// Load the plugin that provides the "uglify" task.
 	grunt.loadNpmTasks("grunt-contrib-uglify-es");
 	grunt.loadNpmTasks("grunt-contrib-concat");
+	grunt.loadNpmTasks("grunt-contrib-cssmin");
+	grunt.loadNpmTasks("grunt-insert");
 
 	// Default task(s).
 	grunt.registerTask("prod", ["concat", "uglify"]);
-	grunt.registerTask("dev", ["concat"]);
+	grunt.registerTask("dev", ["concat", "cssmin", "insert"]);
 };

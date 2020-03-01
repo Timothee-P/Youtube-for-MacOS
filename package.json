@@ -2,10 +2,7 @@
 	"name": "youtube-mac",
 	"version": "1.0.0",
 	"description": "Desktop app for Youtube",
-	"main": "app/main.js",
-	"scripts": {
-		"test": "electron ."
-	},
+	"main": "app/main/index.js",
 	"author": "Timothée Poincheval",
 	"license": "MIT",
 	"devDependencies": {
@@ -13,7 +10,9 @@
 		"electron-packager": "^14.2.1",
 		"grunt": "^1.0.4",
 		"grunt-contrib-concat": "^1.0.1",
-		"grunt-contrib-uglify-es": "^3.3.0"
+		"grunt-contrib-cssmin": "^3.0.0",
+		"grunt-contrib-uglify-es": "^3.3.0",
+		"grunt-insert": "^0.1.0"
 	},
 	"dependencies": {}
 }
