@@ -46,10 +46,8 @@ window.addEventListener("wheel", function(e) {
 		clearTimeout(swipeGestureTimeout);
 		if (horizontalMouseMove < -150 && Math.abs(horizontalMouseMove / verticalMouseMove) > 2.5 && !hasShownSwipeArrow) {
 			hasShownSwipeArrow = true;
-			ipcRenderer.send("asynchronous-message", "showBackArrow");
 		} else if (horizontalMouseMove > 150 && Math.abs(horizontalMouseMove / verticalMouseMove) > 2.5 && !hasShownSwipeArrow) {
 			hasShownSwipeArrow = true;
-			ipcRenderer.send("asynchronous-message", "showForwardArrow");
 		}
 		swipeGestureTimeout = setTimeout(onSwipeGestureFinish, 70);
 	}
