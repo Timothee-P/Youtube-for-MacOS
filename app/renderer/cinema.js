@@ -1,17 +1,10 @@
 let Cinema = {
-	isCinemaLink: function() {
-		if (window.location.pathname == "/watch") {
-			CinemaHeader.hide(true);
-			this.cinemaOn();
-		} else {
-			CinemaHeader.init();
-			this.cinemaOff();
-		}
-	},
 	cinemaOn: function() {
 		document.querySelector("ytd-app").setAttribute("class", "ytp-big-mode fullVideo");
+		CinemaHeader.hide(true);
 		ipcRenderer.send("asynchronous-message", ["cinemaOn"]);
 		this.setVideoTitleTop();
+		pip.buildIcon();
 		CinemaHeader.startEvent();
 		setTimeout(() => {
 			ipcRenderer.send("asynchronous-message", [
@@ -23,6 +16,7 @@ let Cinema = {
 	},
 	cinemaOff: function() {
 		document.querySelector("ytd-app").setAttribute("class", "");
+		CinemaHeader.reset();
 		ipcRenderer.send("asynchronous-message", ["cinemaOff"]);
 		this.removeVideoTitleTop();
 		CinemaHeader.endEvent();
@@ -54,3 +48,7 @@ let Cinema = {
 		}
 	}
 };
+
+document.addEventListener("fullscreenchange", function() {
+	document.exitFullscreen();
+});
