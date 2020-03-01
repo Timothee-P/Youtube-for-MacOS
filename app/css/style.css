@@ -42,6 +42,18 @@ CINEMA MODE
 	left: 0 !important;
 }
 /* Player */
+.ytp-big-mode .ytp-chrome-controls .ytp-fullerscreen-edu-button.ytp-button,
+.ytp-big-mode .ytp-pip-button.ytp-button {
+	display: inline-block !important;
+}
+.ytp-miniplayer-button.ytp-button svg {
+	height: 34px !important;
+	width: 34px !important;
+	margin: 10px;
+}
+.ytp-big-mode .ytp-size-button.ytp-button {
+	display: none !important;
+}
 .ytp-big-mode .ytp-time-display {
 	font-size: 150% !important;
 }
@@ -59,6 +71,9 @@ CINEMA MODE
 }
 button.ytp-button.ytp-cards-button {
 	transition: 0ms;
+}
+.ytp-big-mode video.video-stream.html5-main-video {
+	-webkit-app-region: drag;
 }
 /* Cinema header */
 .top h1 {
