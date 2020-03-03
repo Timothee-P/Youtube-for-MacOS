@@ -1,10 +1,12 @@
 const { BrowserWindow } = require("electron");
 const path = require("path");
+const isDev = require("electron-is-dev");
 
 const { Events } = require("./event.js");
 
+var navigationUrl = "https://www.youtube.com/";
 exports.Window = {
-	init: function() {
+	init: function () {
 		global.mainWindow = new BrowserWindow({
 			width: 1600,
 			height: 900,
@@ -18,13 +20,13 @@ exports.Window = {
 				preload: path.join(__dirname, "../renderer/build/index.js")
 			}
 		});
-		global.mainWindow.loadURL(`https://www.youtube.com/`);
+		global.mainWindow.loadURL(navigationUrl);
+		if (isDev) {
+			global.mainWindow.webContents.openDevTools();
+		}
 		Events.initWindow();
 	},
-	showYT: function() {
+	showMainWindow: function () {
 		global.mainWindow.show();
-	},
-	offline: function() {
-		global.mainWindow.loadURL(path.join(__dirname, "../template/offline.html"));
 	}
 };

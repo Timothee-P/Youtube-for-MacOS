@@ -2,12 +2,10 @@ const { ipcMain } = require("electron");
 const { Window } = require("./window.js");
 
 exports.Ipc = {
-	load: function() {
+	load: function () {
 		ipcMain.on("asynchronous-message", (event, arg) => {
-			if (arg[0] == "showYT") {
-				Window.showYT();
-			} else if (arg[0] == "offline") {
-				Window.offline();
+			if (arg[0] == "showMainWindow") {
+				Window.showMainWindow();
 			} else if (arg[0] == "cinemaOn") {
 				if (!global.mainWindow.isFullScreen()) {
 					global.mainWindow.setWindowButtonVisibility(false);
