@@ -40,6 +40,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-insert");
 
 	// Default task(s).
-	grunt.registerTask("prod", ["concat", "uglify"]);
+	grunt.registerTask("prod", ["concat", "uglify", "cssmin", "insert"]);
 	grunt.registerTask("dev", ["concat", "cssmin", "insert"]);
 };
