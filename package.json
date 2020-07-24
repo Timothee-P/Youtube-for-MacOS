@@ -6,15 +6,17 @@
 	"author": "Timothée Poincheval",
 	"license": "MIT",
 	"devDependencies": {
-		"electron": "^8.0.1",
-		"electron-packager": "^14.2.1",
-		"grunt": "^1.0.4",
+		"electron": "^8.4.1",
+		"electron-packager": "^15.0.0",
+		"grunt": "^1.2.1",
 		"grunt-contrib-concat": "^1.0.1",
 		"grunt-contrib-cssmin": "^3.0.0",
 		"grunt-contrib-uglify-es": "^3.3.0",
 		"grunt-insert": "^0.1.0"
 	},
 	"dependencies": {
-		"electron-is-dev": "^1.1.0"
+		"@cliqz/adblocker-electron": "^1.17.0",
+		"cross-fetch": "^3.0.5",
+		"electron-is-dev": "^1.2.0"
 	}
 }
