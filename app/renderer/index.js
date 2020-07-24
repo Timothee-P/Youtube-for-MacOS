@@ -22,9 +22,8 @@ var app = {
 };
 
 // Wait for js file to load
-var count = 0;
 function thisJsFileLoaded() {
-	console.log(count++)
+	//console.log(count++)
 	if (document.getElementsByTagName("head").length === 0) {
 		setTimeout(() => {
 			thisJsFileLoaded();

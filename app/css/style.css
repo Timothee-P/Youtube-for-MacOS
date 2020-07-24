@@ -8,12 +8,6 @@ ytd-page-manager#page-manager {
 	margin-top: 68px !important;
 }
 
-/* Ads */
-div#masthead-ad,
-.ytp-ad-progress,
-.video-ads.ytp-ad-module {
-	display: none !important;
-}
 
 /** 
 CINEMA MODE
