@@ -4,6 +4,7 @@ const { Menu } = require("./menu.js");
 const { Cookies } = require("./cookies.js");
 const { Ipc } = require("./ipc.js");
 const { Window } = require("./window.js");
+const { AdsBlock } = require("./adsBlock.js");
 const { session } = require("electron");
 var { ElectronBlocker } = require('@cliqz/adblocker-electron');
 var fetch = require('cross-fetch'); // required 'fetch'
@@ -14,9 +15,7 @@ app.on("ready", async () => {
 	Menu.load();
 	Cookies.load(true);
 	app.dock.show();
-	ElectronBlocker.fromPrebuiltAdsAndTracking(fetch).then((blocker) => {
-		blocker.enableBlockingInSession(session.defaultSession);
-	});
+	AdsBlock.start();
 	Ipc.load();
 
 	Window.init();

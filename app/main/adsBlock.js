@@ -1,5 +1,6 @@
-const { session } = require("electron");
 
+const { session } = require("electron");
+var { ElectronBlocker } = require('@cliqz/adblocker-electron');
 exports.AdsBlock = {
 	start: function () {
 		session.defaultSession.webRequest.onBeforeRequest({ urls: [] }, function (details, callback) {
@@ -28,6 +29,12 @@ exports.AdsBlock = {
 			} else {
 				callback({ cancel: false });
 			}
+		});
+	},
+	easyStart: function () {
+
+		ElectronBlocker.fromPrebuiltAdsAndTracking(fetch).then((blocker) => {
+			blocker.enableBlockingInSession(session.defaultSession);
 		});
 	}
 };
