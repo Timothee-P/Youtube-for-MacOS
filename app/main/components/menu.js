@@ -1,7 +1,7 @@
 const { app, Menu } = require("electron");
 
-menu = {
-	load: function() {
+exports.Menu = {
+	init: function() {
 		Menu.setApplicationMenu(this.buildTemplate());
 	},
 	buildTemplate: function() {
@@ -81,4 +81,3 @@ menu = {
 		]);
 	}
 };
-exports.Menu = menu;
