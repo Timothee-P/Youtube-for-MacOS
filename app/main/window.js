@@ -2,8 +2,6 @@ const { BrowserWindow } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 
-const { Events } = require("./event.js");
-
 var navigationUrl = "https://www.youtube.com/";
 var window = {
 	init: function () {
