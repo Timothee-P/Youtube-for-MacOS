@@ -1,5 +1,6 @@
 const { session } = require("electron");
 var { ElectronBlocker } = require('@cliqz/adblocker-electron');
+var fetch = require('cross-fetch')
 
 exports.AdsBlock = {
 	init: function () {
