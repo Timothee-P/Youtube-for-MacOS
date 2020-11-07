@@ -19,14 +19,14 @@ function onSwipeGestureFinish() {
 	if (horizontalMouseMove - beginningScrollRight > 150 && Math.abs(horizontalMouseMove / verticalMouseMove) > 2.5) {
 		if (beginningScrollRight < 10) {
 			resetCounters();
-			ipcRenderer.send("asynchronous-message", ["goForward"]);
+			ipcRenderer.send("cinema-message", ["goForward"]);
 		}
 	}
 
 	if (horizontalMouseMove + beginningScrollLeft < -150 && Math.abs(horizontalMouseMove / verticalMouseMove) > 2.5) {
 		if (beginningScrollLeft < 10) {
 			resetCounters();
-			ipcRenderer.send("asynchronous-message", ["goBack"]);
+			ipcRenderer.send("cinema-message", ["goBack"]);
 		}
 	}
 	resetCounters();

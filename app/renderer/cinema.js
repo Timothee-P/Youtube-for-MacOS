@@ -2,12 +2,12 @@ let Cinema = {
 	cinemaOn: function() {
 		document.querySelector("ytd-app").setAttribute("class", "ytp-big-mode fullVideo");
 		CinemaHeader.hide(true);
-		ipcRenderer.send("asynchronous-message", ["cinemaOn"]);
+		ipcRenderer.send("cinema-message", ["cinemaOn"]);
 		this.setVideoTitleTop();
 		pip.buildIcon();
 		CinemaHeader.startEvent();
 		setTimeout(() => {
-			ipcRenderer.send("asynchronous-message", [
+			ipcRenderer.send("cinema-message", [
 				"resizeRatio",
 				document.getElementsByClassName("video-stream")[0].style.width,
 				document.getElementsByClassName("video-stream")[0].style.height
@@ -17,7 +17,7 @@ let Cinema = {
 	cinemaOff: function() {
 		document.querySelector("ytd-app").setAttribute("class", "");
 		CinemaHeader.reset();
-		ipcRenderer.send("asynchronous-message", ["cinemaOff"]);
+		ipcRenderer.send("cinema-message", ["cinemaOff"]);
 		this.removeVideoTitleTop();
 		CinemaHeader.endEvent();
 	},

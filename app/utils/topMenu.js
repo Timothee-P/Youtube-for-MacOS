@@ -1,10 +1,11 @@
-const { app, Menu } = require("electron");
+const { Menu } = require("electron");
 
-exports.Menu = {
-	init: function() {
+module.exports = class TopMenu {
+	constructor() {
 		Menu.setApplicationMenu(this.buildTemplate());
-	},
-	buildTemplate: function() {
+	};
+
+	buildTemplate() {
 		return Menu.buildFromTemplate([
 			...(process.platform === "darwin"
 				? [

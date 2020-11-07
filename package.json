@@ -2,7 +2,7 @@
 	"name": "youtube-mac",
 	"version": "1.0.0",
 	"description": "Desktop app for Youtube",
-	"main": "app/main/index.js",
+	"main": "app/app.js",
 	"author": "Timothée Poincheval",
 	"license": "MIT",
 	"devDependencies": {

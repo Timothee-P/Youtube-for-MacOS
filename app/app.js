@@ -1,26 +1,37 @@
-const { app } = require("electron");
+const { app,ipcMain } = require("electron");
+global.isDev = require("electron-is-dev");
 
-const { Menu } = require("./main/components/menu.js");
-const { Cookies } = require("./main/components/cookies.js");
-const { Ipc } = require("./main/ipc.js");
-const { Window } = require("./main/window.js");
-const { AdsBlock } = require("./main/components/adsBlock.js");
+var TopMenu = require("./utils/topMenu.js");
+var Cookies = require("./utils/cookies.js");
+var AdsBlock = require("./utils/adsBlock.js");
+var Settings = require("./utils/settings.js");
 
-app.allowRendererProcessReuse = true; // Default value false is deprecated, it will change to "true" in Electron 9
+var MainWindow = require("./main/windows/mainWindow.js");
 
-app.on("ready", async () => {
-	Menu.init();
-	Cookies.init(true);
-	AdsBlock.init();
-	Ipc.init();
+class App {
+	constructor() {
+		app.on("ready", async () => {
+			this.menu = new TopMenu()
+			this.cookies = new Cookies()
+			this.adsBlock = new AdsBlock()
+			this.config = new Settings()
+			this.initEvent()
+			
+			this.window = new MainWindow()
+			
+			// if (isDev) this.window.webContents.openDevTools();
+		})
+	}
 
-	Window.init();
-});
+	initEvent() {
+		app.on("window-all-closed", () => {
+			app.quit();
+		});
 
-app.on("window-all-closed", () => {
-	app.quit();
-});
+		app.on("before-quit", () => {
+			this.window.clearCache();
+		});
+	}
+}
 
-app.on("before-quit", () => {
-	global.mainWindow.webContents.session.clearCache(() => { });
-});
+global.app = new App();

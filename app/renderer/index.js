@@ -11,19 +11,18 @@ var app = {
 			}
 		});
 		Offline.init();
-		ipcRenderer.send("asynchronous-message", ["showMainWindow"]);
+		ipcRenderer.send("mainWindow-ready", []);
 	},
 	injectCSS: function () {
 		var css = document.createElement("style");
 		css.type = "text/css";
-		css.innerHTML = " // STYLE.CSS INSERT HERE ON BUILD // ";
+		css.innerHTML = " // RENDERER.CSS INSERT HERE ON BUILD // ";
 		document.getElementsByTagName("head")[0].appendChild(css);
 	}
 };
 
 // Wait for js file to load
 function thisJsFileLoaded() {
-	//console.log(count++)
 	if (document.getElementsByTagName("head").length === 0) {
 		setTimeout(() => {
 			thisJsFileLoaded();
@@ -33,6 +32,4 @@ function thisJsFileLoaded() {
 	}
 }
 
-setTimeout(() => {
-	thisJsFileLoaded()
-}, 10);
+setTimeout(() => {thisJsFileLoaded()}, 10);

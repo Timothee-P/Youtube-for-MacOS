@@ -35,7 +35,7 @@ let CinemaHeader = {
 				document.querySelector(".ytp-cards-button").style.transform = "translateY(58px)";
 			}
 			document.getElementById("masthead-container").style.top = "0";
-			ipcRenderer.send("asynchronous-message", ["showButton"]);
+			ipcRenderer.send("cinema-message", ["showButton"]);
 		}
 	},
 	hide: function(bypassIf = false) {
@@ -45,7 +45,7 @@ let CinemaHeader = {
 				document.querySelector(".ytp-cards-button").style.transform = "";
 			}
 			document.getElementById("masthead-container").style.top = "";
-			ipcRenderer.send("asynchronous-message", ["hideButton"]);
+			ipcRenderer.send("cinema-message", ["hideButton"]);
 		}
 	},
 
