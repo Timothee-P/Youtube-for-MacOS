@@ -1,7 +1,7 @@
 const { session } = require("electron");
 
 exports.Cookies = {
-	load: function(isBlack) {
+	init: function(isBlack) {
 		session.defaultSession.cookies.set({
 			url: "https://www.youtube.com",
 			name: "wide",

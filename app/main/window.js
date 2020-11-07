@@ -5,7 +5,7 @@ const isDev = require("electron-is-dev");
 const { Events } = require("./event.js");
 
 var navigationUrl = "https://www.youtube.com/";
-exports.Window = {
+var window = {
 	init: function () {
 		global.mainWindow = new BrowserWindow({
 			width: 1600,
@@ -24,9 +24,23 @@ exports.Window = {
 		if (isDev) {
 			global.mainWindow.webContents.openDevTools();
 		}
-		Events.initWindow();
+		window.initEvent();
 	},
+
+	initEvent: function () {
+		global.mainWindow.webContents.on("enter-html-full-screen", function (e) {
+			if (!global.mainWindow.isFullScreen()) {
+				global.mainWindow.setWindowButtonVisibility(true);
+			} else {
+				global.mainWindow.setWindowButtonVisibility(false);
+			}
+			global.mainWindow.setFullScreen(!global.mainWindow.isFullScreen());
+		});
+	},
+
 	showMainWindow: function () {
 		global.mainWindow.show();
 	}
 };
+
+exports.Window = window
