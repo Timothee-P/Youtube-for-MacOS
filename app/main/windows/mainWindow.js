@@ -2,12 +2,14 @@ const { BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 
 var Cinema = require("../components/cinema.js")
+var WindowBound = require("../../utils/windowBound.js")
 
 class MainWindow extends BrowserWindow{
 	constructor() {
+		var windowBound = new WindowBound()
 		super({
-			width: 1600,
-			height: 900,
+			width: windowBound.width,
+			height: windowBound.height,
 			frame: false,
 			backgroundColor: "#272727",
 			titleBarStyle: "hidden",
@@ -20,6 +22,7 @@ class MainWindow extends BrowserWindow{
 		})
 		this.loadURL("https://www.youtube.com/");
 		this.initEvents();
+		this.windowBound = windowBound
 		this.cinema = new Cinema(this)
 	}
 

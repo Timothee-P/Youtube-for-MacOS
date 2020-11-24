@@ -14,7 +14,7 @@ class App {
 			this.menu = new TopMenu()
 			this.cookies = new Cookies()
 			this.adsBlock = new AdsBlock()
-			this.config = new Settings()
+			this.settings = new Settings()
 			this.initEvent()
 			
 			this.window = new MainWindow()
@@ -33,5 +33,6 @@ class App {
 		});
 	}
 }
+
 
 global.app = new App();
