@@ -7,7 +7,7 @@ module.exports =  class Cinema {
 	}
 
 	initEvent() {
-		this.window.webContents.on("enter-html-full-screen", function (e) {
+		this.window.webContents.on("enter-html-full-screen",  (e) =>{
 			this.toogleFullScreen();
 		})
 		ipcMain.on("cinema-message", (event, arg) => { 

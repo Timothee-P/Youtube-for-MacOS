@@ -12,5 +12,4 @@ bundle:
 		--arch=all \
 		--icon=./app/assets/icon.icns \
 		--overwrite \
-		--out=build \
-		&& open build/Youtube-darwin-x64/Youtube.app
+		--out=build 
