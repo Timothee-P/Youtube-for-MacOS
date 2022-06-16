@@ -6,7 +6,7 @@
 	"author": "Timothée Poincheval",
 	"license": "MIT",
 	"devDependencies": {
-		"electron": "^11.2.1",
+		"electron": "^15.5.5",
 		"electron-packager": "^15.2.0",
 		"grunt": "^1.3.0",
 		"grunt-contrib-concat": "^1.0.1",
